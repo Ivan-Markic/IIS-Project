@@ -27,8 +27,8 @@ namespace ClientApp
         private const string RPC_URL = "http://localhost:8080";
 
         private const string XML_ANONYMIZED_CUSTOMERS_PATH = "../../../../../Data/customersAnon.xml";
-        private const string ANONYFLOW_API_URL = "https://api.anonyflow.com";
-        private const string ANONYFLOW_API_KEY = "tkCrmwPM2EnF1Ax2GSsH6JxaBbRpVXAaJhwMLwM1";
+        private const string ANONYFLOW_API_URL = "placeholder";
+        private const string ANONYFLOW_API_KEY = "placeholder";
         private const string REQUEST_JSON = "application/json";
         private const string ANONYFLOW_ANONYMIZE_PACKET_METHOD = "/anony-packet";
         private const string ANONYFLOW_DEANONYMIZE_PACKET_METHOD = "/deanony-packet";
