@@ -1,0 +1,17 @@
+﻿<element name="student" xmlns="http://relaxng.org/ns/structure/1.0">
+      <element name="name">
+        <text/>
+      </element>
+      <element name="surname">
+        <text/>
+      </element>
+      <element name="subject">
+        <text/>
+      </element>
+      <element name="grade">
+        <data type="integer" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+          <param name="minInclusive">2</param>
+          <param name="maxInclusive">5</param>
+        </data>
+      </element>
+</element>
