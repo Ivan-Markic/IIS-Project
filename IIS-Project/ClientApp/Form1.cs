@@ -1,4 +1,6 @@
 ﻿using LibraryForIISProject.Models;
+using LibraryForIISProject.Utils;
+using StudentServiceReference;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -39,6 +41,12 @@ namespace ClientApp
         public Form1()
         {
             InitializeComponent();
+            PopulateData();
+            
+        }
+
+        private void PopulateData()
+        {
             tbName.Text = "Laura";
             tbSurname.Text = "Laurić";
             tbSubject.Text = "Math";
@@ -46,6 +54,10 @@ namespace ClientApp
             cbValidate.Items.Add("XSD");
             cbValidate.Items.Add("RNG");
             cbValidate.SelectedIndex = 1;
+            cbNameOfNode.Items.Add("name");
+            cbNameOfNode.Items.Add("surname");
+            cbNameOfNode.Items.Add("subject");
+            cbNameOfNode.SelectedIndex = 0;
         }
 
         private void btnCreateStudent_Click(object sender, EventArgs e)
@@ -75,7 +87,7 @@ namespace ClientApp
         // REST API XSD
         private void AddStudentWithXsdValidation()
         {
-            
+
             Student student = GetStudentFromInputs<Student>();
 
             DataContractSerializer dataContractSerializer = new DataContractSerializer(typeof(Student));
@@ -110,7 +122,7 @@ namespace ClientApp
                 }
             }
             catch (Exception)
-            {   
+            {
                 MessageBox.Show("Validation failed, check inputs.", "Validation error");
             }
         }
@@ -156,6 +168,41 @@ namespace ClientApp
             }
         }
 
+        private void LoadStudentFromSoapService()
+        {
+            try
+            {
+                StudentServiceSoapClient studentService = new StudentServiceSoapClient
+                    (StudentServiceSoapClient
+                        .EndpointConfiguration.StudentServiceSoap);
+
+                GetStudentXmlFilteredByXPathRequest request = 
+                    new GetStudentXmlFilteredByXPathRequest(new GetStudentXmlFilteredByXPathRequestBody(tbSearch.Text, cbNameOfNode.SelectedItem.ToString()));
+
+                 XmlElement studentsOfLastName = studentService
+                .GetStudentXmlFilteredByXPathAsync(request)
+                .Result
+                .Body
+                .GetStudentXmlFilteredByXPathResult;
+
+                List<Student> students = new List<Student>(
+                    XmlFileHandler.GetStudentsFromXml(studentsOfLastName));
+
+                MessageBox.Show("Number of students matching given condition: " + students.Count);
+                foreach (Student student in students)
+                {
+                    MessageBox.Show("Student " + student.ToString());
+                }
+
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Error connecting to the SOAP service, check if it is running.",
+                    "SOAP error.");
+                return;
+            }
+        }
+
 
         private void ResetInputFields()
         {
@@ -186,6 +233,10 @@ namespace ClientApp
                 Grade = (int)numbericGrade.Value
             }, typeof(T));
         }
-   
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            LoadStudentFromSoapService();
+        }
     }
 }

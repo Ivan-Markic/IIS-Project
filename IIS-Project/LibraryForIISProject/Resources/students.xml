@@ -24,4 +24,10 @@
     <subject>Math</subject>
     <grade>4</grade>
   </student>
+  <student xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <name>Matej</name>
+    <surname>Matejić</surname>
+    <subject>English</subject>
+    <grade>5</grade>
+  </student>
 </students>

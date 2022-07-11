@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <student xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
-  <name>Ivan</name>
-  <surname>Ivic</surname>
-  <subject>Math</subject>
-  <grade>0</grade>
+  <name>Matej</name>
+  <surname>Matejić</surname>
+  <subject>English</subject>
+  <grade>5</grade>
 </student>

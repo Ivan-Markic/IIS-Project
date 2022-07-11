@@ -20,6 +20,16 @@ namespace LibraryForIISProject.Utils
             }
         }
 
+        public static List<Student> GetStudentsFromXml(XmlElement studentsOfLastName)
+        {
+
+            XmlSerializer serializer = new XmlSerializer(typeof(StudentListWrapper));
+            using (XmlReader xmlReader = new XmlNodeReader(studentsOfLastName))
+            {
+                return ((StudentListWrapper)serializer.Deserialize(xmlReader)).Students;
+            }
+        }
+
         public static void AddStudentToXml(string xmlPath, Student student)
         {
             XmlDocument doc = new XmlDocument();
