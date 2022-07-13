@@ -17,5 +17,10 @@ namespace LibraryForIISProject.Models
         {
             Students = new List<Student>();
         }
+
+        public StudentListWrapper(List<Student> students)
+        {
+            Students = students;
+        }
     }
 }

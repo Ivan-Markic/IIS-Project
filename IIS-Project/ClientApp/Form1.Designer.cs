@@ -55,6 +55,13 @@ namespace ClientApp
             this.tbCity = new System.Windows.Forms.TextBox();
             this.tbTemperature = new System.Windows.Forms.TextBox();
             this.btnGetTemperature = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
+            this.btnValidate = new System.Windows.Forms.Button();
+            this.btnGetData = new System.Windows.Forms.Button();
+            this.tbUsername = new System.Windows.Forms.TextBox();
+            this.tbPassword = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numbericGrade)).BeginInit();
             this.SuspendLayout();
             // 
@@ -262,11 +269,80 @@ namespace ClientApp
             this.btnGetTemperature.UseVisualStyleBackColor = true;
             this.btnGetTemperature.Click += new System.EventHandler(this.btnGetTemperature_Click);
             // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(328, 193);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(136, 20);
+            this.label13.TabIndex = 26;
+            this.label13.Text = "Test Authentication";
+            // 
+            // btnValidate
+            // 
+            this.btnValidate.Location = new System.Drawing.Point(339, 229);
+            this.btnValidate.Name = "btnValidate";
+            this.btnValidate.Size = new System.Drawing.Size(94, 29);
+            this.btnValidate.TabIndex = 27;
+            this.btnValidate.Text = "Validate";
+            this.btnValidate.UseVisualStyleBackColor = true;
+            this.btnValidate.Click += new System.EventHandler(this.btnValidate_Click);
+            // 
+            // btnGetData
+            // 
+            this.btnGetData.Location = new System.Drawing.Point(339, 348);
+            this.btnGetData.Name = "btnGetData";
+            this.btnGetData.Size = new System.Drawing.Size(94, 29);
+            this.btnGetData.TabIndex = 28;
+            this.btnGetData.Text = "Get Data";
+            this.btnGetData.UseVisualStyleBackColor = true;
+            this.btnGetData.Click += new System.EventHandler(this.btnGetData_Click);
+            // 
+            // tbUsername
+            // 
+            this.tbUsername.Location = new System.Drawing.Point(328, 264);
+            this.tbUsername.Name = "tbUsername";
+            this.tbUsername.Size = new System.Drawing.Size(125, 27);
+            this.tbUsername.TabIndex = 29;
+            // 
+            // tbPassword
+            // 
+            this.tbPassword.Location = new System.Drawing.Point(328, 297);
+            this.tbPassword.Name = "tbPassword";
+            this.tbPassword.Size = new System.Drawing.Size(125, 27);
+            this.tbPassword.TabIndex = 30;
+            this.tbPassword.UseSystemPasswordChar = true;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(249, 301);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(73, 20);
+            this.label14.TabIndex = 32;
+            this.label14.Text = "Password:";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(244, 267);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(78, 20);
+            this.label15.TabIndex = 31;
+            this.label15.Text = "Username:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.tbPassword);
+            this.Controls.Add(this.tbUsername);
+            this.Controls.Add(this.btnGetData);
+            this.Controls.Add(this.btnValidate);
+            this.Controls.Add(this.label13);
             this.Controls.Add(this.btnGetTemperature);
             this.Controls.Add(this.tbTemperature);
             this.Controls.Add(this.tbCity);
@@ -325,6 +401,13 @@ namespace ClientApp
         private System.Windows.Forms.TextBox tbCity;
         private System.Windows.Forms.TextBox tbTemperature;
         private System.Windows.Forms.Button btnGetTemperature;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button btnValidate;
+        private System.Windows.Forms.Button btnGetData;
+        private System.Windows.Forms.TextBox tbUsername;
+        private System.Windows.Forms.TextBox tbPassword;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label15;
     }
 }
 

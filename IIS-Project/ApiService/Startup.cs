@@ -1,22 +1,21 @@
+using ApiService.Auth;
 using LibraryForIISProject.Models;
 using LibraryForIISProject.Utils;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
+using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
 namespace ApiService
 {
     public class Startup
     {
-        private const string XML_CUSTOMERS_FILEPATH = "../LibraryForIISProject/Resources/students.xml";
+        private const string XML_STUDENTS_FILEPATH = "../LibraryForIISProject/Resources/students.xml";
 
         private List<Student> databasestudents;
 
@@ -24,7 +23,7 @@ namespace ApiService
         {
             Configuration = configuration;
 
-            databasestudents = XmlFileHandler.GetStudentsFromXml(XML_CUSTOMERS_FILEPATH);
+            databasestudents = XmlFileHandler.GetStudentsFromXml(XML_STUDENTS_FILEPATH);
         }
 
         public IConfiguration Configuration { get; }
@@ -36,6 +35,25 @@ namespace ApiService
             services.AddControllers().AddXmlDataContractSerializerFormatters();
             services.AddSingleton<List<Student>>(databasestudents);
 
+            //Auth
+            string key = "InteroperabilnostInformacijskihSustava";
+            services.AddSingleton<JwtAuthenticationManager>(new JwtAuthenticationManager(key));
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +66,7 @@ namespace ApiService
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

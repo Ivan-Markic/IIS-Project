@@ -1,5 +1,7 @@
 ﻿using LibraryForIISProject.Models;
 using LibraryForIISProject.Utils;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using StudentServiceReference;
 using System;
 using System.Collections.Generic;
@@ -24,9 +26,10 @@ namespace ClientApp
         private const string WEATHER_DATA_XML_PATH = "../../../../LibraryForIISProject/Resources/templateForWeatherRequest.xml";
 
         private const string REQUEST_JSON = "application/json";
-        private const string ANONYFLOW_API_KEY_HEADER_NAME = "x-api-key";
 
         #endregion
+
+        private string jsonToken;
 
         public Form1()
         {
@@ -110,7 +113,7 @@ namespace ClientApp
                 }
                 else
                 {
-                    MessageBox.Show($"Status code: {response.StatusCode}", "Info");
+                    MessageBox.Show($"Server returned Status code: {response.StatusCode}", "Error");
                 }
             }
             catch (Exception)
@@ -262,6 +265,84 @@ namespace ClientApp
         }
 
 
+        //Authentication
+        private void btnValidate_Click(object sender, EventArgs e)
+        {
+            if (tbUsername.Text == "" || tbPassword.Text == "")
+            {
+                MessageBox.Show("You need to input credentials");
+                return;
+            }
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"http://localhost:5000/api/Student/login?username={tbUsername.Text}&password={tbPassword.Text}");
+            request.Method = "POST";
+            request.Accept = REQUEST_JSON;
+            request.ContentType = REQUEST_JSON;
+
+            try
+            {
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    Stream responseStream = response.GetResponseStream();
+                    using (StreamReader reader = new StreamReader(responseStream))
+                    {
+                        jsonToken = reader.ReadToEnd();
+                        jsonToken = jsonToken.Remove(jsonToken.Length - 1);
+                        jsonToken = jsonToken.Remove(0, 1);
+                        MessageBox.Show($"You are in :) , your token is: {jsonToken}");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show($"Status code: {response.StatusCode}", "Info");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                MessageBox.Show("Validation failed, check inputs.", "Validation error");
+            }
+        }
+
+        private void btnGetData_Click(object sender, EventArgs e)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(REQUEST_URI + "/secret");
+            request.Method = "GET";
+            request.Accept = REQUEST_JSON;
+            request.ContentType = REQUEST_JSON;
+            request.PreAuthenticate = true;
+            if (jsonToken != null)
+            {
+                request.Headers["Authorization"] = $"Bearer {jsonToken}";
+            }
+            
+            try
+            {
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    Stream responseStream = response.GetResponseStream();
+                    using (StreamReader reader = new StreamReader(responseStream))
+                    {
+                        string message = reader.ReadToEnd();
+                        message = message.Remove(message.Length - 1);
+                        message = message.Remove(0, 1);
+                        MessageBox.Show($"You are now inside of secrets, the secret is: {message}");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show($"Status code: {response.StatusCode}", "Info");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Response error:\n{ex.Message}\n{ex.StackTrace}", "Error.");
+            }
+        }
+
         private void ResetInputFields()
         {
             tbName.Text = "";
@@ -301,5 +382,6 @@ namespace ClientApp
         {
             GetTemperatureFromXmlRpcServer();
         }
+
     }
 }

@@ -1,14 +1,18 @@
-﻿using Commons.Xml.Relaxng;
+﻿using ApiService.Auth;
+using Commons.Xml.Relaxng;
 using LibraryForIISProject.Models;
 using LibraryForIISProject.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Threading.Tasks;
+using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 
@@ -31,28 +35,38 @@ namespace ApiService.Controllers
         #endregion
         
         private List<Student> students;
+        private IConfiguration configuration;
+        private JwtAuthenticationManager jwtAuthenticationManager;
         private bool validationError;
 
-        public StudentController(List<Student> students)
+        public StudentController(List<Student> students, IConfiguration configuration, JwtAuthenticationManager jwtAuthenticationManager)
         {
             this.students = students;
+            this.configuration = configuration;
+            this.jwtAuthenticationManager = jwtAuthenticationManager;
         }
 
-        [HttpGet]
-        public List<Student> Get()
+        public string Get()
         {
-            return students;
+            return "Hi user :)";
         }
 
-        // POST api/<CustomersController>/xml
+        [Authorize]
+        [HttpGet("secret")]
+        public IActionResult GetStudents()
+        {
+            return Ok("I just passed IIS :)");
+        }
+
+        [AllowAnonymous]
         [HttpPost("xml")]
-        public void Post(XmlElement customerXml)
+        public void ValidationXSD(XmlElement studentXml)
         {
             XmlDocument doc = null;
             try
             {
-                doc = customerXml.OwnerDocument;
-                doc.AppendChild(customerXml);
+                doc = studentXml.OwnerDocument;
+                doc.AppendChild(studentXml);
                 doc.Schemas.Add(XSD_TARGET_NAMESPACE, XSD_STUDENT_FILEPATH);
 
                 doc.Validate(XmlValidation);
@@ -102,10 +116,10 @@ namespace ApiService.Controllers
                     break;
             }
         }
-
-        // POST api/<CustomersController>/xmlrng
+        
+        [AllowAnonymous]
         [HttpPost("xmlrng")]
-        public void PostRng(XmlElement studentXml)
+        public void ValidationRng(XmlElement studentXml)
         {
             XmlDocument doc = null;
             try
@@ -115,7 +129,7 @@ namespace ApiService.Controllers
 
                 XmlDocument tempFile = new XmlDocument();
                 tempFile.LoadXml(studentXml.OuterXml);
-                using (XmlTextWriter xmlTextWriter = new XmlTextWriter(TEMP_STUDENT_FILENAME, System.Text.Encoding.UTF8))
+                using (XmlTextWriter xmlTextWriter = new XmlTextWriter(TEMP_STUDENT_FILENAME, Encoding.UTF8))
                 {
                     xmlTextWriter.Formatting = Formatting.Indented;
                     tempFile.Save(xmlTextWriter);
@@ -124,8 +138,6 @@ namespace ApiService.Controllers
                 XmlReader studentReader = new XmlTextReader(TEMP_STUDENT_FILENAME);
                 XmlReader rngReader = new XmlTextReader(RNG_STUDENT_FILEPATH);
 
-                bool validated = true;
-
                 using (RelaxngValidatingReader rngValidator = new RelaxngValidatingReader(studentReader, rngReader))
                 {
                     while (!rngValidator.EOF)
@@ -133,9 +145,6 @@ namespace ApiService.Controllers
                         rngValidator.Read();
                     }
                 }
-
-                if (validated)
-                {
                     DataContractSerializer dataContractSerializer = new DataContractSerializer(typeof(StudentWithoutNamespace));
                     MemoryStream xmlStream = new MemoryStream();
                     doc.Save(xmlStream);
@@ -151,21 +160,27 @@ namespace ApiService.Controllers
                         Response.StatusCode = StatusCodes.Status500InternalServerError;
                         Response.WriteAsync($"Failed to add student to XML.\n{ex.Message}\n{ex.StackTrace}");
                     }
-                }
-                else
-                {
-                    Response.StatusCode = StatusCodes.Status406NotAcceptable;
-                    Response.WriteAsync($"Validation not passed.");
-                }
+                
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.StackTrace);
                 Response.StatusCode = StatusCodes.Status500InternalServerError;
                 Response.WriteAsync($"Something went wrong: {ex.Message}\n{doc.OuterXml}");
             }
 
+        }
+
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public IActionResult Login(string username, string password)
+        {
+            var token = jwtAuthenticationManager.Authenticate(username, password);
+            
+            if (token == null)
+            {
+                return Unauthorized();
+            }
+            return Ok(token);
         }
     }
 }

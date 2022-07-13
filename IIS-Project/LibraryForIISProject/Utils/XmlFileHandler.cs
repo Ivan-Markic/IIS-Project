@@ -19,6 +19,15 @@ namespace LibraryForIISProject.Utils
                 return ((StudentListWrapper)serializer.Deserialize(xmlStream)).Students;
             }
         }
+        public static XmlElement SerializeStudents(List<Student> students)
+        {
+            XmlDocument doc = new XmlDocument();
+            using (XmlWriter writer = doc.CreateNavigator().AppendChild())
+            {
+                new XmlSerializer(typeof(StudentListWrapper)).Serialize(writer, new StudentListWrapper(students));
+            }
+            return doc.DocumentElement;
+        }
 
         public static List<Student> GetStudentsFromXml(XmlElement filteredStudents)
         {

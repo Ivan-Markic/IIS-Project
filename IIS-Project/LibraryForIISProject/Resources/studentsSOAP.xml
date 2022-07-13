@@ -1,9 +1,15 @@
 <students>
   <student>
-    <name>Ana</name>
-    <surname>Anić</surname>
+    <name>Laura</name>
+    <surname>Laurić</surname>
     <subject>Math</subject>
-    <grade>3</grade>
+    <grade>4</grade>
+  </student>
+  <student>
+    <name>Laura</name>
+    <surname>Laurić</surname>
+    <subject>Math</subject>
+    <grade>5</grade>
   </student>
   <student>
     <name>Laura</name>
@@ -12,14 +18,8 @@
     <grade>4</grade>
   </student>
   <student>
-    <name>Lauraa</name>
+    <name>Laura</name>
     <surname>Laurić</surname>
-    <subject>Math</subject>
-    <grade>4</grade>
-  </student>
-  <student>
-    <name>Ana</name>
-    <surname>Anic</surname>
     <subject>Math</subject>
     <grade>5</grade>
   </student>
