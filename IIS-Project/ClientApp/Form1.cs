@@ -3,15 +3,10 @@ using LibraryForIISProject.Utils;
 using StudentServiceReference;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -23,17 +18,12 @@ namespace ClientApp
 
         private const string REQUEST_URI = "http://localhost:5000/api/Student";
         private const string REQUEST_XML = "application/xml";
-        private const string WEATHER_DATA_XML_PATH = "../../../WeatherXml/weatherData.xml";
 
-        private const string RPC_METHOD_NAME = "Weather.getTemperature";
+        private const string RPC_METHOD_NAME_FOR_WEATHER = "Weather.getTemperatureFromCityName";
         private const string RPC_URL = "http://localhost:8080";
+        private const string WEATHER_DATA_XML_PATH = "../../../../LibraryForIISProject/Resources/templateForWeatherRequest.xml";
 
-        private const string XML_ANONYMIZED_CUSTOMERS_PATH = "../../../../../Data/customersAnon.xml";
-        private const string ANONYFLOW_API_URL = "placeholder";
-        private const string ANONYFLOW_API_KEY = "placeholder";
         private const string REQUEST_JSON = "application/json";
-        private const string ANONYFLOW_ANONYMIZE_PACKET_METHOD = "/anony-packet";
-        private const string ANONYFLOW_DEANONYMIZE_PACKET_METHOD = "/deanony-packet";
         private const string ANONYFLOW_API_KEY_HEADER_NAME = "x-api-key";
 
         #endregion
@@ -58,6 +48,7 @@ namespace ClientApp
             cbNameOfNode.Items.Add("surname");
             cbNameOfNode.Items.Add("subject");
             cbNameOfNode.SelectedIndex = 0;
+            tbCity.Text = "Bjelovar";
         }
 
         private void btnCreateStudent_Click(object sender, EventArgs e)
@@ -111,6 +102,7 @@ namespace ClientApp
             try
             {
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+ 
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     MessageBox.Show($"Successfully added {student}", "Success");
@@ -179,19 +171,27 @@ namespace ClientApp
                 GetStudentXmlFilteredByXPathRequest request = 
                     new GetStudentXmlFilteredByXPathRequest(new GetStudentXmlFilteredByXPathRequestBody(tbSearch.Text, cbNameOfNode.SelectedItem.ToString()));
 
-                 XmlElement studentsOfLastName = studentService
+                 XmlElement filteredStudents = studentService
                 .GetStudentXmlFilteredByXPathAsync(request)
                 .Result
                 .Body
                 .GetStudentXmlFilteredByXPathResult;
 
-                List<Student> students = new List<Student>(
-                    XmlFileHandler.GetStudentsFromXml(studentsOfLastName));
-
-                MessageBox.Show("Number of students matching given condition: " + students.Count);
-                foreach (Student student in students)
+                if (filteredStudents == null)
                 {
-                    MessageBox.Show("Student " + student.ToString());
+                    MessageBox.Show("Validation from JAXB did not pass");
+                }
+                else
+                {
+                    MessageBox.Show("Validation from JAXB passed");
+                    List<Student> students = new List<Student>(
+                        XmlFileHandler.GetStudentsFromXml(filteredStudents));
+
+                    MessageBox.Show("Number of students matching given condition: " + students.Count);
+                    foreach (Student student in students)
+                    {
+                        MessageBox.Show("Student " + student.ToString());
+                    }
                 }
 
             }
@@ -200,6 +200,64 @@ namespace ClientApp
                 MessageBox.Show("Error connecting to the SOAP service, check if it is running.",
                     "SOAP error.");
                 return;
+            }
+        }
+
+        // XML-RPC
+        private void GetTemperatureFromXmlRpcServer()
+        {
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(WEATHER_DATA_XML_PATH);
+
+                doc.DocumentElement.ChildNodes[0].InnerText = RPC_METHOD_NAME_FOR_WEATHER;  //methodName
+                doc.DocumentElement.ChildNodes[1]                               // params
+                    .FirstChild                                                 // param
+                    .FirstChild                                                 // value
+                    .FirstChild.InnerText = tbCity.Text;                 // string
+
+                MemoryStream xmlStream = new MemoryStream();
+                doc.Save(xmlStream);
+
+                byte[] data = Encoding.UTF8.GetBytes(Encoding.UTF8.GetString(xmlStream.ToArray()));
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(RPC_URL);
+                request.Method = "POST";
+                request.Accept = REQUEST_XML;
+                request.ContentType = REQUEST_XML;
+
+                using (Stream requestData = request.GetRequestStream())
+                {
+                    requestData.Write(data, 0, data.Length);
+                }
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream responseData = response.GetResponseStream();
+
+                doc = new XmlDocument();
+                doc.Load(responseData);
+
+                tbTemperature.Text = doc
+                        .DocumentElement
+                        .FirstChild            
+                        .FirstChild             
+                        .FirstChild             
+                        .FirstChild             
+                        .InnerText;
+
+                if (tbTemperature.Text == "faultCode0")
+                {
+                    tbTemperature.Text = "No data";
+                    MessageBox.Show($"No data for inputed city {tbCity.Text}");
+                }
+                else
+                {
+                    tbTemperature.Text += "°C";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occured:\n{ex.Message}\n{ex.StackTrace}", "Error.");
             }
         }
 
@@ -237,6 +295,11 @@ namespace ClientApp
         private void btnSearch_Click(object sender, EventArgs e)
         {
             LoadStudentFromSoapService();
+        }
+
+        private void btnGetTemperature_Click(object sender, EventArgs e)
+        {
+            GetTemperatureFromXmlRpcServer();
         }
     }
 }

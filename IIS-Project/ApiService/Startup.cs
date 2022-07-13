@@ -35,6 +35,7 @@ namespace ApiService
             services.AddControllers();
             services.AddControllers().AddXmlDataContractSerializerFormatters();
             services.AddSingleton<List<Student>>(databasestudents);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

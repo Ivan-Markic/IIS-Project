@@ -5,8 +5,7 @@
     xmlns="http://schemas.datacontract.org/2004/07/LibraryForIISProject.Models"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
 >
-
-  <xs:complexType name="student">
+  <xs:complexType name="studentType">
     <xs:sequence  minOccurs="1" maxOccurs="1">
       <xs:element name="name" type="xs:string"/>
       <xs:element name="surname" type="xs:string"/>
@@ -24,10 +23,9 @@
 
   <xs:element name="students">
     <xs:complexType>
-      <xs:sequence minOccurs="1" maxOccurs="unbounded">
-        <xs:element name="student" type="student"/>
+      <xs:sequence minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="student" type="studentType"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  
 </xs:schema>

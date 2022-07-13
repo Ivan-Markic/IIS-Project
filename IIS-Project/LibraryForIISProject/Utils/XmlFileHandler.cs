@@ -20,11 +20,11 @@ namespace LibraryForIISProject.Utils
             }
         }
 
-        public static List<Student> GetStudentsFromXml(XmlElement studentsOfLastName)
+        public static List<Student> GetStudentsFromXml(XmlElement filteredStudents)
         {
 
             XmlSerializer serializer = new XmlSerializer(typeof(StudentListWrapper));
-            using (XmlReader xmlReader = new XmlNodeReader(studentsOfLastName))
+            using (XmlReader xmlReader = new XmlNodeReader(filteredStudents))
             {
                 return ((StudentListWrapper)serializer.Deserialize(xmlReader)).Students;
             }

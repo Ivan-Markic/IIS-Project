@@ -49,6 +49,12 @@ namespace ClientApp
             this.tbSearch = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.btnSearch = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.tbCity = new System.Windows.Forms.TextBox();
+            this.tbTemperature = new System.Windows.Forms.TextBox();
+            this.btnGetTemperature = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numbericGrade)).BeginInit();
             this.SuspendLayout();
             // 
@@ -204,11 +210,69 @@ namespace ClientApp
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(285, 13);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(196, 20);
+            this.label10.TabIndex = 20;
+            this.label10.Text = "Get temperature for you city";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(285, 65);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(37, 20);
+            this.label11.TabIndex = 21;
+            this.label11.Text = "City:";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(226, 97);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(96, 20);
+            this.label12.TabIndex = 22;
+            this.label12.Text = "Temperature:";
+            // 
+            // tbCity
+            // 
+            this.tbCity.Location = new System.Drawing.Point(328, 62);
+            this.tbCity.Name = "tbCity";
+            this.tbCity.Size = new System.Drawing.Size(125, 27);
+            this.tbCity.TabIndex = 23;
+            // 
+            // tbTemperature
+            // 
+            this.tbTemperature.Location = new System.Drawing.Point(328, 97);
+            this.tbTemperature.Name = "tbTemperature";
+            this.tbTemperature.ReadOnly = true;
+            this.tbTemperature.Size = new System.Drawing.Size(125, 27);
+            this.tbTemperature.TabIndex = 24;
+            // 
+            // btnGetTemperature
+            // 
+            this.btnGetTemperature.Location = new System.Drawing.Point(339, 130);
+            this.btnGetTemperature.Name = "btnGetTemperature";
+            this.btnGetTemperature.Size = new System.Drawing.Size(94, 29);
+            this.btnGetTemperature.TabIndex = 25;
+            this.btnGetTemperature.Text = "Get";
+            this.btnGetTemperature.UseVisualStyleBackColor = true;
+            this.btnGetTemperature.Click += new System.EventHandler(this.btnGetTemperature_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnGetTemperature);
+            this.Controls.Add(this.tbTemperature);
+            this.Controls.Add(this.tbCity);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.tbSearch);
             this.Controls.Add(this.label9);
@@ -255,6 +319,12 @@ namespace ClientApp
         private System.Windows.Forms.TextBox tbSearch;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox tbCity;
+        private System.Windows.Forms.TextBox tbTemperature;
+        private System.Windows.Forms.Button btnGetTemperature;
     }
 }
 

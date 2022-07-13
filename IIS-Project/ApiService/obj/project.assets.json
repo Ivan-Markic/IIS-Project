@@ -1,0 +1,139 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "RelaxNG/3.2.3": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Commons.Xml.Relaxng.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Commons.Xml.Relaxng.dll": {}
+        }
+      },
+      "LibraryForIISProject/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "compile": {
+          "bin/placeholder/LibraryForIISProject.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/LibraryForIISProject.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "RelaxNG/3.2.3": {
+      "sha512": "guM0e+yp4k8kE3Kh03E7aLyDqRYLQ+bWizNxu6Mv2rK3s3heojMZ3z98dj/buBUPTk7qg0WAip2dBlkYGBz/SQ==",
+      "type": "package",
+      "path": "relaxng/3.2.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net20/Commons.Xml.Relaxng.dll",
+        "lib/net40/Commons.Xml.Relaxng.dll",
+        "relaxng.3.2.3.nupkg.sha512",
+        "relaxng.nuspec"
+      ]
+    },
+    "LibraryForIISProject/1.0.0": {
+      "type": "project",
+      "path": "../LibraryForIISProject/LibraryForIISProject.csproj",
+      "msbuildProject": "../LibraryForIISProject/LibraryForIISProject.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.1": [
+      "LibraryForIISProject >= 1.0.0",
+      "RelaxNG >= 3.2.3"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\ivanm\\.nuget\\packages\\": {},
+    "D:\\Programing\\vs2019\\Components\\NuGetPackages": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\ivanm\\Desktop\\IIS\\projekt\\IIS-Project\\IIS-Project\\ApiService\\ApiService.csproj",
+      "projectName": "ApiService",
+      "projectPath": "C:\\Users\\ivanm\\Desktop\\IIS\\projekt\\IIS-Project\\IIS-Project\\ApiService\\ApiService.csproj",
+      "packagesPath": "C:\\Users\\ivanm\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ivanm\\Desktop\\IIS\\projekt\\IIS-Project\\IIS-Project\\ApiService\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "D:\\Programing\\vs2019\\Components\\NuGetPackages"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\ivanm\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.1"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "projectReferences": {
+            "C:\\Users\\ivanm\\Desktop\\IIS\\projekt\\IIS-Project\\IIS-Project\\LibraryForIISProject\\LibraryForIISProject.csproj": {
+              "projectPath": "C:\\Users\\ivanm\\Desktop\\IIS\\projekt\\IIS-Project\\IIS-Project\\LibraryForIISProject\\LibraryForIISProject.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
+        "dependencies": {
+          "RelaxNG": {
+            "target": "Package",
+            "version": "[3.2.3, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.AspNetCore.App": {
+            "privateAssets": "none"
+          },
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
+      }
+    }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'RelaxNG 3.2.3' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.1'. This package may not be fully compatible with your project.",
+      "libraryId": "RelaxNG",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
+}

@@ -1,2 +1,32 @@
 <students>
+  <student>
+    <name>Ana</name>
+    <surname>Anić</surname>
+    <subject>Math</subject>
+    <grade>3</grade>
+  </student>
+  <student>
+    <name>Laura</name>
+    <surname>Laurić</surname>
+    <subject>Math</subject>
+    <grade>4</grade>
+  </student>
+  <student>
+    <name>Lauraa</name>
+    <surname>Laurić</surname>
+    <subject>Math</subject>
+    <grade>4</grade>
+  </student>
+  <student>
+    <name>Ana</name>
+    <surname>Anic</surname>
+    <subject>Math</subject>
+    <grade>5</grade>
+  </student>
+  <student>
+    <name>Laura</name>
+    <surname>Laurić</surname>
+    <subject>Math</subject>
+    <grade>5</grade>
+  </student>
 </students>
